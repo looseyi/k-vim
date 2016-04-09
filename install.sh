@@ -86,7 +86,7 @@ export SHELL=$system_shell
 echo "Step4: compile YouCompleteMe"
 echo "It will take a long time, just be patient!"
 echo "If error,you need to compile it yourself"
-echo "cd $CURRENT_DIR/bundle/YouCompleteMe/ && python install.py --clang-completer"
+echo "cd $CURRENT_DIR/bundle/YouCompleteMe/ && sh -x install.sh"
 cd $CURRENT_DIR/bundle/YouCompleteMe/
 git submodule update --init --recursive
 if [ `which clang` ]   # check system clang
