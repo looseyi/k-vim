@@ -651,7 +651,8 @@ if has("gui_running")
     set t_Co=256
 endif
 
-
+" jsx for react-navtive
+let g:jsx_ext_required = 0
 let g:solarized_termcolors=256
 
 " theme主题

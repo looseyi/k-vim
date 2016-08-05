@@ -117,6 +117,15 @@ Plug 'dyng/ctrlsf.vim'
 " quickrun
 Plug 'thinca/vim-quickrun'
 
+Plug 'rking/ag.vim'
+
+" vim-plug
+Plug 'jbgutierrez/vim-babel'
+Plug 'mattn/webapi-vim'
+Plug 'https://github.com/mxw/vim-jsx.git'
+Plug 'https://github.com/pangloss/vim-javascript.git'
+
+
 " git
 " fugitive
 Plug 'tpope/vim-fugitive'
@@ -623,6 +632,7 @@ endif
 
 " ctrlsf {{{
     nmap \ <Plug>CtrlSFCwordPath<CR>
+    let g:ctrlsf_ackprg = 'ag'
     " let g:ctrlsf_position = 'below'
     " let g:ctrlsf_winsize = '30%'
     let g:ctrlsf_auto_close = 0
