@@ -1,5 +1,5 @@
 "==========================================
-" Author:  wklken
+" Author: Edmond, fork from wklken
 " Version: 9.1
 " Email: wklken@yeah.net
 " BlogPost: http://www.wklken.me
@@ -24,12 +24,13 @@
 " Initial Plugin 加载插件
 "==========================================
 
-" 修改leader键
+" 修改leaderm键
 let mapleader = ','
 let g:mapleader = ','
 
 " 开启语法高亮
 syntax on
+syntax enable
 
 " install bundles
 if filereadable(expand("~/.vimrc.bundles"))
@@ -60,6 +61,8 @@ filetype plugin on
 " 启动自动补全
 filetype plugin indent on
 
+"vi nocompatible
+set nocompatible
 " 文件修改之后自动载入
 set autoread
 " 启动的时候不显示那个援助乌干达儿童的提示
@@ -130,7 +133,7 @@ set magic
 
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
-set whichwrap+=<,>,h,l
+set whichwrap+=<,>,h,l,[,]
 
 "==========================================
 " Display Settings 展示/排版等界面格式设置
@@ -157,6 +160,8 @@ set laststatus=2
 set number
 " 取消换行
 set nowrap
+" fobid research file on both side
+set nowrapscan
 
 " 括号配对情况, 跳转并高亮一下匹配的括号
 set showmatch
@@ -218,6 +223,8 @@ set smarttab
 set expandtab
 " 缩进时，取整 use multiple of shiftwidth when indenting with '<' and '>'
 set shiftround
+" auto change dir to current file
+set autochdir
 
 " A buffer becomes hidden when it is abandoned
 set hidden
@@ -269,9 +276,12 @@ set termencoding=utf-8
 set ffs=unix,dos,mac
 
 " 如遇Unicode值大于255的文本，不必等到空格再折行
-set formatoptions+=m
+set formatoptions+=mM
 " 合并两行中文时，不在中间加空格
 set formatoptions+=B
+
+set fencs=utf-8,gbk
+
 
 
 "==========================================
@@ -630,20 +640,47 @@ endif
 set lazyredraw          " redraw only when we need to.
 
 
+if v:lang =~? '^\(zh\)\|\(ja\)\|\(ko\)'
+	set ambiwidth=double
+endif
+
+let g:fullscreen = 0
+function! ToggleFullscreen()
+	if g:fullscreen == 1
+		let g:fullscreen = 0
+		let mod = "remove"
+	else
+		let g:fullscreen = 1
+		let mod = "add"
+	endif
+	call system("wmctrl -ir " . v:windowid . " -b " . mod . ",fullscreen")
+endfunction
+map <silent> <F11> :call ToggleFullscreen()<CR>
+
 "==========================================
 " Theme Settings  主题设置
 "==========================================
 
 " Set extra options when running in GUI mode
 if has("gui_running")
+    set macmeta
+    set transparency=10
+    colorscheme molokai
+    " colorscheme solarized
+    " colorscheme molokai
+    " colorscheme desert
     set guifont=Monaco:h14
-    if has("gui_gtk2")   "GTK2
-        set guifont=Monaco\ 12,Monospace\ 12
-    endif
-    set guioptions-=T
-    set guioptions+=e
-    set guioptions-=r
-    set guioptions-=L
+    set background=dark
+    set guifont=PragmataPro:h14
+    " if has("gui_gtk2")   "GTK2
+        " set guifont=Monaco\ 12,Monospace\ 12
+    " endif
+    set guioptions-=T " hide tool bar
+    set guioptions-=m " hide menu bar
+    set guioptions-=L " hide left scroll bar
+    set guioptions-=r " hide right scroll bar
+    set guioptions+=b " hide bottom scroll bar
+    set guioptions-=e
     set guitablabel=%M\ %t
     set showtabline=1
     set linespace=2
@@ -655,8 +692,6 @@ endif
 let g:jsx_ext_required = 0
 let g:solarized_termcolors=256
 
-" theme主题
-set background=dark
 set t_Co=256
 
 colorscheme solarized
