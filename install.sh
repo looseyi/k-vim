@@ -89,6 +89,6 @@ echo "If error,you need to compile it yourself"
 echo "cd $CURRENT_DIR/bundle/YouCompleteMe/ && sh -x install.sh"
 cd $CURRENT_DIR/bundle/YouCompleteMe/
 git submodule update --init --recursive
-sh install.sh
+python install.py
 
 echo "Install Done!"
