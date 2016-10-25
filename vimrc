@@ -42,6 +42,7 @@ endif
 if filereadable(expand("./llvm/vimrc"))
   source ./llvm/vimrc
   echo "execute llvm"
+endif
 
 " ensure ftdetect et al work by including this after the bundle stuff
 filetype plugin indent on
@@ -579,6 +580,8 @@ nnoremap <leader>ev :vsp $MYVIMRC<CR>
 nnoremap <leader>ez :vsp ~/.zshrc<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
+nmap <leader>r <Plug>WxappReload
+
 "==========================================
 " FileType Settings  文件类型设置
 "==========================================
@@ -592,11 +595,6 @@ autocmd BufRead,BufNewFile *.vue setlocal filetype=vue.html.javascript tabstop=2
 
 " disable showmatch when use > in php
 au BufWinEnter *.php set mps-=<:>
-
-augroup filetype
-  au! BufRead,BufNewFile *Makefile*     set filetype=make
-augroup END
-
 
 
 

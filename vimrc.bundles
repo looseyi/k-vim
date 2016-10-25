@@ -21,7 +21,7 @@ if !exists('g:bundle_groups')
 endif
 
 " ----------------------------------------------------------------------------
-" 使用 vim-plug 管理插件
+" 使用 vim-loug 管理插件
 " vim plugin bundle control, command model
 " ----------------------------------------------------------------------------
 
@@ -169,6 +169,10 @@ Plug 'kana/vim-textobj-line'
 Plug 'kana/vim-textobj-entire'
 " 增加缩进文本对象: i   dai yai cii - 相同缩进属于同一块
 Plug 'kana/vim-textobj-indent'
+
+Plug 'chemzqm/wxapp.vim'
+
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 if count(g:bundle_groups, 'tmux')
     " tmux
