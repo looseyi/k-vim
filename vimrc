@@ -580,7 +580,12 @@ nnoremap <leader>ev :vsp $MYVIMRC<CR>
 nnoremap <leader>ez :vsp ~/.zshrc<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
-nmap <leader>r <Plug>WxappReload
+" WeChat Environment
+nmap <leader>r <Plug>WFFAC12xappReload
+
+autocmd BufWritePost *.wxml call macos#keycodes('command', 'shift', 'r')
+autocmd BufWritePost *.wxss call macos#keycodes('command', 'shift', 'r')
+autocmd BufWritePost ~/wechat-dev/**/*.js call macos#keycodes('command', 'shift', 'b')
 
 "==========================================
 " FileType Settings  文件类型设置
