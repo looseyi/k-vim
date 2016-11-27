@@ -97,7 +97,7 @@ set noswapfile
   " " set undodir=/tmp/vimundo/
 " endif
 
-set wildignore=*.swp,*.bak,*.pyc,*.class,.svn
+set wildignore=.svn,CVS,.git,.hg,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.xpm,*.pyc,*.bak,*.pkl,swp,*.o,.DS_Store,*.jpg,*.d,*.dia,*.imageset,*.png,*.ai,*/Pods/*,*.xcworkspace,*.xcodeproj,*/tmp/*,*.lock,*/xcodebuild/*,*.orig,*.rope*
 
 " 突出显示当前列
 set cursorcolumn
@@ -554,6 +554,24 @@ nnoremap <C-e> 2<C-e>
 nnoremap <C-y> 2<C-y>
 
 
+" Objective-C related tasks bindings
+nmap <leader>x :!rake xcode_build<CR>
+nmap <leader>r :!rake simulator<CR>
+nmap <leader>ll :!rake debug<CR>
+nmap <leader>cl :!rake clang_db<CR>
+
+" Rail.vim bindings
+nmap <leader>t :Rrunner<CR>
+
+" vim-lldb mappings
+noremap <leader>po :Lpo<CR>
+noremap <leader>pO :LpO<CR>
+noremap <leader>lb :Lbreakpoint<CR>
+noremap <leader>lc :Lcontinue<CR>
+noremap <leader>ls :Lstep<CR>
+noremap <leader>ln :Lnext <CR>
+
+
 " Jump to start and end of line using the home row keys
 " 增强tab操作, 导致这个会有问题, 考虑换键
 "nmap t o<ESC>k
@@ -591,6 +609,7 @@ autocmd BufWritePost ~/wechat-dev/**/*.js call macos#keycodes('command', 'shift'
 " FileType Settings  文件类型设置
 "==========================================
 
+
 " 具体编辑文件类型的一般设置，比如不要 tab 等
 autocmd FileType python set tabstop=4 shiftwidth=4 expandtab ai
 autocmd FileType ruby,javascript,html,css,xml set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
@@ -601,7 +620,52 @@ autocmd BufRead,BufNewFile *.vue setlocal filetype=vue.html.javascript tabstop=2
 " disable showmatch when use > in php
 au BufWinEnter *.php set mps-=<:>
 
+if has("autocmd")
 
+
+  " Avoid showing trailing whitespace when in insert mode
+  au InsertEnter * :set listchars-=trail:•
+  au InsertLeave * :set listchars+=trail:•
+  " Automatically removing all trailing whitespace
+  au BufWritePre * :%s/\s\+$//e
+
+
+  " 设置文件类型
+  " Make sure all markdown files have the correct filetype set and setup wrapping
+  au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} setf markdown.mkd
+  " Treat JSON files like JavaScript
+  au BufNewFile,BufRead *.json set ft=javascript
+  " set .podspec, .podfile file types to ruby
+  au BufNewFile,BufRead *.podspec,Podfile set ft=ruby
+  " set .h, .m file types to Objective-C
+  au BufNewFile,BufRead *.{h,m} set ft=objc
+  autocmd BufRead,BufNewFile *.part set filetype=html
+
+  " disable showmatch when use > in php
+  au BufWinEnter *.php set mps-=<:>
+
+  " 具体编辑文件类型的一般设置，比如不要 tab 等
+  au FileType python set tabstop=4 shiftwidth=4 expandtab ai
+  au FileType ruby,javascript,html,css,xml set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+  au FileType objc set softtabstop=4 tabstop=4 shiftwidth=4
+  au FileType html set textwidth=0 wrapmargin=0 formatoptions=1
+  au FileType html set wrap
+  au FileType html set linebreak
+  au FileType html set nolist  " list disables linebreak
+
+  " Remember last location in file, but not for commit messages.
+  " see :help last-position-jump
+  au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$")
+    \| exe "normal! g`\"" | endif
+
+  " magic markers: enable using `H/S/J/C to jump back to
+  " last HTML, stylesheet, JS or Ruby code buffer
+  au BufLeave *.{erb,html}      exe "normal! mH"
+  au BufLeave *.{css,scss,sass} exe "normal! mS"
+  au BufLeave *.{js,coffee}     exe "normal! mJ"
+  au BufLeave *.{rb}            exe "normal! mC"
+
+endif
 
 " 保存python文件时删除多余空格
 fun! <SID>StripTrailingWhitespaces()

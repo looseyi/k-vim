@@ -68,3 +68,19 @@ endsnippet
 snippet nqa
 # noqa
 endsnippet
+
+snippet xcheader "XCode File Header"
+//
+//  ${1:filename}.swift
+//  $2
+//
+//  Created by Edmond on `!v strftime("%Y/%m/%d %H:%M:%S")`
+//  Copyright © 2015 XueQiu. All rights reserved.
+//
+endsnippet
+
+snippet	block "rspec: context block"
+func $1() {
+	${0:${VISUAL:$ assertions...}}
+}
+endsnippet
