@@ -28,13 +28,11 @@ def parseArguments(arguments):
   nextIsInclude = False
   nextIsDefine = False
   nextIsIncludeFile = False
-  nextIsIsystem = False
 
   includes = []
   defines = []
   include_file = []
   options = []
-  isystem = []
 
   for arg in arguments:
     if nextIsInclude:
@@ -46,10 +44,7 @@ def parseArguments(arguments):
     elif nextIsIncludeFile:
       include_file += [arg]
       nextIsIncludeFile = False
-    elif nextIsIsystem:
-      isystem += [arg]
-      nextIsIsystem = False
-    elif arg == "-I":
+    elif arg in ('-I', '-isystem'):
       nextIsInclude = True
     elif arg == "-D":
       nextIsDefine = True
@@ -59,8 +54,6 @@ def parseArguments(arguments):
       defines += [arg[2:]]
     elif arg == "-include":
       nextIsIncludeFile = True
-    elif arg == "-isystem":
-      nextIsIsystem = True
     elif arg.startswith('-std='):
       options.append(arg)
     elif arg == '-ansi':
@@ -70,10 +63,9 @@ def parseArguments(arguments):
     elif arg.startswith('-W'):
       options.append(arg)
 
-  result = list(map(lambda x: "-I" + x, includes))
-  result.extend(map(lambda x: "-D" + x, defines))
-  result.extend(map(lambda x: "-include " + x, include_file))
-  result.extend(map(lambda x: "-isystem" + x, isystem))
+  result = list(["-I" + x for x in includes])
+  result.extend(["-D" + x for x in defines])
+  result.extend(["-include " + x for x in include_file])
   result.extend(options)
 
   return result
@@ -88,7 +80,7 @@ def mergeLists(base, new):
 configuration = readConfiguration()
 args = parseArguments(sys.argv)
 result = mergeLists(configuration, args)
-writeConfiguration(map(lambda x: x + "\n", result))
+writeConfiguration([x + "\n" for x in result])
 
 
 import subprocess

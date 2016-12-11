@@ -639,6 +639,7 @@ if has("autocmd")
   au BufNewFile,BufRead *.podspec,Podfile set ft=ruby
   " set .h, .m file types to Objective-C
   au BufNewFile,BufRead *.{h,m} set ft=objc
+  au BufNewFile,BufRead *.{swift} set ft=swift
   autocmd BufRead,BufNewFile *.part set filetype=html
 
   " disable showmatch when use > in php
@@ -646,8 +647,7 @@ if has("autocmd")
 
   " 具体编辑文件类型的一般设置，比如不要 tab 等
   au FileType python set tabstop=4 shiftwidth=4 expandtab ai
-  au FileType ruby,javascript,html,css,xml set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
-  au FileType objc set softtabstop=4 tabstop=4 shiftwidth=4
+  au FileType ruby,javascript,html,css,xml,objc,swift set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
   au FileType html set textwidth=0 wrapmargin=0 formatoptions=1
   au FileType html set wrap
   au FileType html set linebreak

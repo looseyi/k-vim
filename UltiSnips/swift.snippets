@@ -206,6 +206,13 @@ DispatchQueue.background.async {
 }
 endsnippet
 
+snippet lazyView "UIView, UIImageView etc. Init"
+fileprivate lazy var ${1:name}: ${2: UIView}= {
+	let view = $2()
+	return view
+}()
+endsnippet
+
 snippet lazylabel "UILabel Init"
 fileprivate lazy var ${1:name}: UILabel = {
 	let label = UILabel()
