@@ -1189,7 +1189,11 @@ function! s:spawn(name, cmd, opts)
             \ 'Invalid arguments (or job table is full)']
     endif
   elseif s:vim8
+<<<<<<< HEAD
     let jid = job_start(s:is_win ? join(argv, ' ') : argv, {
+=======
+    let jid = job_start(argv, {
+>>>>>>> update plugint and swift snippets
     \ 'out_cb':   function('s:job_cb', ['s:job_out_cb',  job]),
     \ 'exit_cb':  function('s:job_cb', ['s:job_exit_cb', job]),
     \ 'out_mode': 'raw'
@@ -1862,6 +1866,7 @@ function! s:update_ruby()
   main = Thread.current
   threads = []
   watcher = Thread.new {
+<<<<<<< HEAD
     if vim7
       while VIM::evaluate('getchar(1)')
         sleep 0.1
@@ -1870,6 +1875,10 @@ function! s:update_ruby()
       require 'io/console' # >= Ruby 1.9
       nil until IO.console.getch == 3.chr
     end
+=======
+    require 'io/console' # >= Ruby 1.9
+    nil until IO.console.getch == 3.chr
+>>>>>>> update plugint and swift snippets
     mtx.synchronize do
       running = false
       threads.each { |t| t.raise Interrupt } unless vim7

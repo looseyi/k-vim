@@ -110,6 +110,18 @@ fileprivate func configNotification() {
 }
 endsnippet
 
+
+snippet initViewController "UIViewController custom Init"
+init(${1: item}: ${2: T}) {
+	self.$1 = $1
+	super.init(nibName: nil, bundle: nil)
+}
+
+required init?(coder aDecoder: NSCoder) {
+	fatalError("init(coder:) has not been implemented")
+}
+endsnippet
+
 snippet viewDidLoad "UIViewController lift cycle viewDidLoad (UIKit)"
 //MARK: UIViewController lifecycle
 
@@ -207,128 +219,93 @@ DispatchQueue.background.async {
 endsnippet
 
 snippet lazyView "UIView, UIImageView etc. Init"
-fileprivate lazy var ${1:name}: ${2: UIView}= {
-	let view = $2()
-	return view
-}()
+fileprivate let ${1:view} = Init(${2:UIView}()) {
+	$1
+}
 endsnippet
 
-snippet lazylabel "UILabel Init"
-fileprivate lazy var ${1:name}: UILabel = {
-	let label = UILabel()
-	label.backgroundColor = UIColor.clear
-	label.font = SFFont.constant(.Regular, size: 14)
-	label.textColor = SFColor.hexStr(.TextLv3)
-	return label
-}()
+snippet lazyConsteLabel "UILabel Init"
+fileprivate let ${1:label} = Init(UILabel()) {
+	\$0.backgroundColor = .clear
+	\$0.font = SFFont.constant(.regular, size: 14)
+	\$0.textColor = SFColor.hexStr(.TextLv3)
+}
 endsnippet
 
-snippet lazybutton "UIButton Init"
-lazy var ${1:button}: UIButton = {
-	let button = UIButton()
-	button.isHidden = true
-	button.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 12, right: 12)
-	button.setImage(UIImage(named: "account_icon_cash_question"), for: .normal)
-	return button
-}()
+snippet lazyConsteButton "UIButton Init"
+fileprivate let ${1:button} = Init(UIButton()) {
+	\$0.isHidden = true
+	\$0.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 12, right: 12)
+	\$0.setImage(UIImage(named: ""), for: .normal)
+}
 endsnippet
 
-snippet lazytableView "lazy create UITableView"
-fileprivate lazy var tableView: UITableView = {
-	let tableView = UITableView(frame: $1)
-	tableView.delegate = self
-	tableView.dataSource = self
-	tableView.estimatedRowHeight = 55
-	tableView.rowHeight = UITableViewAutomaticDimension
-	tableView.separatorColor = SFColor.hexStr(.TextLv4)
-	tableView.backgroundColor = SFColor.hexStr(.BG)
-	tableView.tableHeaderView = UIView()
+snippet lazyConsteTableView "lazy create UITableView"
+fileprivate let tableView = Init(UITableView()) {
+	\$0.delegate = self
+	\$0.dataSource = self
+	\$0.estimatedRowHeight = 55
+	\$0.rowHeight = UITableViewAutomaticDimension
+	\$0.separatorColor = SFColor.hexStr(.TextLv4)
+	\$0.backgroundColor = SFColor.hexStr(.BG)
+	\$0.tableHeaderView = UIView()
 //  once tableview footer view frame height equal zero, it will show bottom line
 //		tableView.tableFooterView = UIView(frame: CGRectMake(0, 0, sf_screenW, sf_pixWidth))
-	tableView.tableFooterView = self.footerView
-	tableView.registerClass($2.self)
-	return tableView
-}()
-endsnippet
-
-snippet viewInit "UIView Init"
-override init(frame: CGRect) {
-	super.init(frame:frame)
-	configSubviews()
-	configConstraints()
-}
-
-required init?(coder aDecoder: NSCoder) {
-	fatalError("init(coder:) has not been implemented")
-}
-
-fileprivate func configSubviews() {
-}
-
-fileprivate func configureConstraints() {
+	\$0.tableFooterView = self.footerView
+	\$0.registerClass($2.self)
 }
 endsnippet
 
-snippet cellInit "UITableViewCell Init"
-class ${1:Cell} : UITableViewCell {
-	override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-		super.init(style: style, reuseIdentifier: reuseIdentifier)
-		configureSubviews()
-		configureConstraints()
+snippet viewInit" UITableViewCell Init"
+final class ${1:cell} : ${2:UITableViewCell} {
+
+	override func configureSubviews() {
+		contentView.addSubview(${2:view})
 	}
 
-	required public init?(coder aDecoder: NSCoder) {
-		super.init(coder: aDecoder)
-	}
-
-	fileprivate func configureSubviews() {
-		selectionStyle = .none
-		${2:subView}.addSubview(centerView)
-	}
-
-	fileprivate func configureConstraints() {
-		${2:subView}.snp.makeConstraints { make in
-			make.top.equalTo(centerView)
-			make.centerX.equalTo(contentView)
+	override func configureConstraints() {
+		${3:view}.snp.makeConstraints {
+			$0.top.equalTo(centerView)
+			$0.centerX.equalTo(contentView)
 		}
 	}
 }
 endsnippet
 
 snippet buttonAddTarget "UIButton Add Target"
-$1.addTarget(self, action: #selector(${2:buttonTouched}), for: .touchUpInside)
+${1:button}.addTarget(self, action: #selector(${2:touchedButton}, for: .touchUpInside)
 endsnippet
 
 snippet makeConstraints "SnapKit make constrains"
-$1.snp.makeConstraints { make in
-	make.edges.equalTo($2)
+${1:view}.snp.makeConstraints {
+	$0.edges.equalTo(${2:view})
 }
 endsnippet
 
 snippet remakeConstraints "SnapKit remake constrains"
-$1.snp.remakeConstraints { make in
-	make.edges.equalTo($2)
+${1:view}.snp.remakeConstraints {
+	$0.edges.equalTo(${2:view})
 }
 endsnippet
 
 snippet updateConstraints "SnapKit upate constrains"
-$1.snp.updateConstraints { make in
-	make.edges.equalTo($2)
+${1:view}.snp.updateConstraints {
+	$0.edges.equalTo(${2:view})
 }
 endsnippet
 
 snippet animated "UIView Animation Duration"
 UIView.animate(withDuration: ${1:0.25}, animations: {
-	$2
+	${2:doSometing}
 }
 endsnippet
 
 snippet animatedDelay "UIView Animation Delay"
-UIView.animate(withDuration: ${1:0.25}, delay: $2, options: [.allowUserInteraction, .beginFromCurrentState ], animations: {
-	$3
+UIView.animate(withDuration: ${1:0.25}, delay: ${2:0.25}, options: [.allowUserInteraction, .beginFromCurrentState], animations: {
+	${2:doSometing}
 }) { finished in
 	if finished {
-		$4
+	${3:doSometing}
 	}
 }
 endsnippet
@@ -336,12 +313,41 @@ endsnippet
 snippet overrideConstraints "UIView override super view constrains"
 override func updateConstraints() {
 	super.updateConstraints()
-	$1.snp.updateConstraints { make in
-		make.$2.equalTo($3)
+	${1:view}.snp.updateConstraints {
+		\$0.${2:view}.equalTo(${3:view})
 	}
 }
 endsnippet
 
 snippet navigationItem "UIN"
 navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:${1:rightButton}];
+endsnippet
+
+
+snippet configureTableView "create and configure UITableView"
+private func configureTableView() {
+	tableView = UITableView(frame: .zero)
+	tableView.backgroundColor = SFColor.hexStr(.BG)
+	tableView.scrollsToTop = true
+	tableView.registerClass(SFFundListCell.self)
+	tableView.registerClass(SFStrategyInfoBannerCell.self)
+	tableView.registerClass(SFEmptyCell.self)
+	tableView.separatorColor = SFColor.hexStr(.TextLv4)
+	tableView.estimatedRowHeight = 105
+	tableView.rowHeight = UITableViewAutomaticDimension
+	view.addSubview(tableview)
+}
+endsnippet
+
+
+snippet CGSize "create a CGSize"
+CGSize(width: ${1: 0}, height: ${2: 0})
+endsnippet
+
+snippet CGRect "create a CGRect"
+CGRect(x: ${1: 0}, y: ${2: 0}, width: ${3: 0}, height: ${4: 0})
+endsnippet
+
+snippet UIEdgeInsets "UIEdgeInsets make"
+UIEdgeInsets(top: ${1:0}, left: ${2:0}, bottom: ${3:0}, right: ${4:0})
 endsnippet
