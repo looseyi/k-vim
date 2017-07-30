@@ -24,6 +24,11 @@
 " Initial Plugin 加载插件
 "==========================================
 
+
+
+"vi nocompatible
+set nocompatible
+
 " 修改leaderm键
 let mapleader = ','
 let g:mapleader = ','
@@ -66,8 +71,6 @@ filetype plugin on
 " 启动自动补全
 filetype plugin indent on
 
-"vi nocompatible
-set nocompatible
 " 文件修改之后自动载入
 set autoread
 " 启动的时候不显示那个援助乌干达儿童的提示
@@ -610,48 +613,44 @@ autocmd BufWritePost ~/wechat-dev/**/*.js call macos#keycodes('command', 'shift'
 "==========================================
 
 
-" 具体编辑文件类型的一般设置，比如不要 tab 等
-autocmd FileType python set tabstop=4 shiftwidth=4 expandtab ai
-autocmd FileType ruby,javascript,html,css,xml set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
-autocmd BufRead,BufNewFile *.md,*.mkd,*.markdown set filetype=markdown.mkd
-autocmd BufRead,BufNewFile *.part set filetype=html
-autocmd BufRead,BufNewFile *.vue setlocal filetype=vue.html.javascript tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
-
-" disable showmatch when use > in php
-au BufWinEnter *.php set mps-=<:>
-
 if has("autocmd")
 
 
   " Avoid showing trailing whitespace when in insert mode
-  au InsertEnter * :set listchars-=trail:•
-  au InsertLeave * :set listchars+=trail:•
+  autocmd InsertEnter * :set listchars-=trail:•
+  autocmd InsertLeave * :set listchars+=trail:•
   " Automatically removing all trailing whitespace
-  au BufWritePre * :%s/\s\+$//e
+  autocmd BufWritePre * :%s/\s\+$//e
 
 
-  " 设置文件类型
+  " autocmd设置文件类型
   " Make sure all markdown files have the correct filetype set and setup wrapping
-  au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} setf markdown.mkd
+  autocmd BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} set ft=markdown.mkd
   " Treat JSON files like JavaScript
-  au BufNewFile,BufRead *.json set ft=javascript
+  autocmd BufNewFile,BufRead *.json set ft=javascript
   " set .podspec, .podfile file types to ruby
-  au BufNewFile,BufRead *.podspec,Podfile set ft=ruby
+  autocmd BufNewFile,BufRead *.podspec,Podfile set ft=ruby
   " set .h, .m file types to Objective-C
-  au BufNewFile,BufRead *.{h,m,swift} set ft=objc
-  au BufNewFile,BufRead *.{java} set ft=java
-  autocmd BufRead,BufNewFile *.part set filetype=html
+  autocmd BufNewFile,BufRead *.{h,m} set ft=objc
+  autocmd BufNewFile,BufRead *.{swift} set ft=swift
+  autocmd BufNewFile,BufRead *.{java} set ft=java
+  autocmd BufRead,BufNewFile *.part set ft=html
 
   " disable showmatch when use > in php
   au BufWinEnter *.php set mps-=<:>
 
   " 具体编辑文件类型的一般设置，比如不要 tab 等
-  au FileType python, objc, java set tabstop=4 shiftwidth=4 expandtab ai
-  au FileType ruby,javascript,html,css,xml set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+  autocmd FileType python,objc,swift,java set tabstop=4 shiftwidth=4 expandtab ai
+  autocmd FileType ruby,javascript,html,css,xml set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+  autocmd BufRead,BufNewFile *.md,*.mkd,*.markdown set filetype=markdown.mkd
+  autocmd BufRead,BufNewFile *.part set filetype=html
+  autocmd BufRead,BufNewFile *.vue setlocal filetype=vue.html.javascript tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
   au FileType html set textwidth=0 wrapmargin=0 formatoptions=1
   au FileType html set wrap
   au FileType html set linebreak
   au FileType html set nolist  " list disables linebreak
+
+
 
   " Remember last location in file, but not for commit messages.
   " see :help last-position-jump
@@ -770,8 +769,8 @@ let g:solarized_termcolors=256
 
 set t_Co=256
 
-colorscheme solarized
-" colorscheme molokai
+" colorscheme solarized
+colorscheme molokai
 
 
 " 设置标记一列的背景颜色和数字一行颜色一致
