@@ -89,6 +89,7 @@ echo "If error,you need to compile it yourself"
 echo "cd $CURRENT_DIR/bundle/YouCompleteMe/ && sh -x install.sh"
 cd $CURRENT_DIR/bundle/YouCompleteMe/
 git submodule update --init --recursive
-python install.py  --tern-completer --clang-completer --gocode-completer
+python install.py  --tern-completer --clang-completer 
+# --gocode-completer
 
 echo "Install Done!"
